@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening Appka</title>
+    <style>
+        @media (max-width: 600px) {
+            .offmobile {
+                display: none;
+            }
+        }
+
+        .marked {
+            text-decoration: underline;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="icon" href="data:;base64,=">
+
+</head>
+
+<body>
+
+
+    <div id="app" class="container">
+
+        <div style="display:flex;justify-content:flex-end;max-width:600px">
+            <a href="/add.html"> <button class="btn btn-primary">Dodaj</button> </a>
+        </div>
+
+
+
+        <br>
+        <span v-if="!piosenka" class="mt-2">Wybierz utwór:</span>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <select class="form-select" v-model="piosenka" @change="setSong()" >
+                   <option :value="elem.name" v-for="elem in songsheaders">{{elem.description}}</option>
+                </select>
+            </div>
+        </div>
+
+        <br>
+        <div v-show="piosenka">
+            <audio controls id="audioelem" v-if="piosenka">
+                <source :src="'muzyka/'+ piosenka +'.mp3'" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+
+            <p id="napisy"></p>
+
+            <div class="row" style="margin-bottom:5px">
+                <div class="col">
+                    <input type="text" v-model="mytext" v-if="fragmentindex >= 0" style="width:500px" class="offmobile"
+                        placeholder="tu możesz spróbować wpisać tekst">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    Fragment: <input style="width:40px" type="number" v-model.number="fragmentindex"
+                        :max="fragmenty.length - 1">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+
+                <div class="col">
+                    <button @click="podejrzyjnapisym" class="btn btn-primary" v-if="fragmentindex >= 0">Podejrzyj
+                        napisy</button>
+
+                    <button @click="next" class="btn btn-success" v-show="!run">Następny</button>
+
+                    <button @click="play" class="btn btn-danger" v-if="fragmentindex >= 0"
+                        v-show="!run">Odtwórz</button>
+
+                    <img src="audio.webp" alt="" v-if="run" style="width:30px;height:30px" @click="pauser()">
+
+
+                    <br>
+
+                    <br>
+                    <button @click="longer(0.5)">Przesuń o 0.5 s</button>
+                    <button @click="longer(-0.5)">Cofnij o 0.5 s</button>
+
+                    <button @click="longerAll(1)">Przesuń wszystkie o 1s </button>
+                    <button @click="longerAll(-1)">Cofnij wszystkie o 1s </button>
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+            <br><br><br><br><br>
+
+            <div style="display:flex;justify-content:flex-end;">
+                <button @click="showAllText()" style="opacity:0.3">Pokaż cały tekst</button>
+            </div>
+            <p style="white-space: pre-line;cursor:pointer" v-for="(elem,index) in fragmenty"
+                :class="{marked:index==fragmentindex}" v-show="alltext" @click="fragmentindex = index">{{index}}.
+                {{elem.tekst}} {{elem.start}}</p>
+
+        </div>
+
+      
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>

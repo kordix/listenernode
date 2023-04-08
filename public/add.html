@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodawanie utworu</title>
+</head>
+
+<body>
+
+        <input type="text" id="songnameinput" placeholder="nazwa piosenki">
+
+        <input type="text" id="descriptioninput" placeholder="opispiosenki">
+
+
+
+        <!-- <button id="addsongbutton">Dodaj songs</button> -->
+
+        <br>
+        <br>
+        <textarea cols="80" rows="30" name="siemano" id="inputarea" placeholder="tutaj wstaw lrc"></textarea>
+        <br>
+        <button type="submit" id="processbutton">Wyślij</button>
+
+        <p style="display:none;color:red" id="songnameerror"><b> UZUPEŁNIJ NAZWĘ UTWORU</b></p>
+
+        <p id="addinfo" style="display:none"><b>Super dodano piosenkę </b></p>
+
+        <p id="addinfo2" style="display:none"><b>Super dodano do songs </b></p>
+
+
+        <h1>File Upload Example</h1>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="myFile">
+            <button type="submit">Upload</button>
+        </form>
+        <div id="response"></div>
+
+
+
+    <script>
+
+
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const responseDiv = document.getElementById('response');
+            if (response.ok) {
+                responseDiv.textContent = result.message;
+            } else {
+                responseDiv.textContent = result.error;
+            }
+        });
+
+
+
+        let inputdata = '';
+        let fragments = [];
+
+        let insertdata = [];
+
+        // document.querySelector('#addsongbutton').addEventListener('click', function(){
+        //     let songname = document.querySelector('#songnameinput').value;
+        //     let description = document.querySelector('#descriptioninput').value;
+        // })
+
+
+    
+
+        document.querySelector('#processbutton').addEventListener('click', function(){
+
+            console.log('afsfas');
+
+            let songname = document.querySelector('#songnameinput').value;
+
+            if(!songname){
+                document.querySelector('#songnameerror').style.display = "block";
+
+                         return;
+            }   
+
+
+            insertdata = [];
+                inputdata = document.querySelector('#inputarea').value;
+
+            fragments = inputdata.split("\n");
+
+
+            for(let i =0 ; i < fragments.length ; i++){
+                const timeString = fragments[i].slice(1,9);
+                const [minutes, secondsAndMilliseconds] = timeString.split(':');
+                const [seconds, milliseconds] = secondsAndMilliseconds.split('.');
+                const totalTimeInSeconds = parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 100;
+           
+                insertdata.push({
+                    start:totalTimeInSeconds,
+                    song:document.querySelector('#songnameinput').value,
+                    tekst:fragments[i].slice(10)
+                })
+
+            }
+
+            console.log(insertdata);
+
+
+            fetch('/populatesong', {method:'POST', headers: {'Content-Type':'application/json'},body:JSON.stringify(insertdata)}).then((res)=>{
+                document.querySelector('#addinfo').style.display = 'block';
+                console.log('POSZŁO');
+            } );
+
+            let songheader = [{ name: document.querySelector('#songnameinput').value, description: document.querySelector('#descriptioninput').value }];
+
+            fetch('/createsong', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(songheader) }).then((res) => {
+                document.querySelector('#addinfo2').style.display = 'block';
+                console.log('POSZŁO');
+            })
+            
+        
+        })
+
+
+ 
+
+    </script>
+
+</body>
+
+</html>

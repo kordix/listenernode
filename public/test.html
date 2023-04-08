@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        const data = [
+                { name: 'John', age: 30 },
+                { name: 'Mary', age: 25 },
+                { name: 'Bob', age: 40 }
+            ];
+
+            const tableName = 'users';
+            const columns = Object.keys(data[0]);
+            const values = data.map(obj => Object.values(obj));
+
+            const insertStatements = values.map(vals => {
+                const escapedVals = vals.map(val => {
+                    if (typeof val === 'string') {
+                        return `'${val.replace(/'/g, "''")}'`;
+                    } else {
+                        return val;
+                    }
+                });
+                return `INSERT INTO ${tableName} (${columns.join(', ')}) VALUES (${escapedVals.join(', ')});`;
+            });
+
+            console.log(insertStatements.join('\n'));
+
+    </script>
+</body>
+</html>

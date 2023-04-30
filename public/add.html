@@ -6,13 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dodawanie utworu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
 
         <input type="text" id="songnameinput" placeholder="nazwa piosenki">
 
-        <input type="text" id="descriptioninput" placeholder="opispiosenki">
+        <input type="text" id="descriptioninput" placeholder="opispiosenki" style="margin-right:200px">
+
+            
+
+        <a href="/manager.html"> <button>Zarządzanie</button> </a>
 
 
 
@@ -20,6 +26,9 @@
 
         <br>
         <br>
+
+        <a href="/"><-- strona główna</a>
+
         <textarea cols="80" rows="30" name="siemano" id="inputarea" placeholder="tutaj wstaw lrc"></textarea>
         <br>
         <button type="submit" id="processbutton">Wyślij</button>
@@ -31,7 +40,7 @@
         <p id="addinfo2" style="display:none"><b>Super dodano do songs </b></p>
 
 
-        <h1>File Upload Example</h1>
+        <h1>Dodaj plik</h1>
         <form id="uploadForm">
             <input type="file" id="fileInput" name="myFile">
             <button type="submit">Upload</button>

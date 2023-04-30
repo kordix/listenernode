@@ -52,6 +52,13 @@ app.get('/movetime', (req,res) => {
     res.send('song:'+req.query.song+',time:'+req.query.time+',mode'+req.query.mode )
 })
 
+app.get('/delete' , (req , res) => {
+    let id = req.query.id;
+    let query = 'DELETE FROM songs where id = ' + id;
+    console.log(query);
+    db.run(query);
+})
+
 
 
 
@@ -190,7 +197,7 @@ app.post('/upload', (req, res) => {
 
 app.get('/migrate', function (req, res) {
     db.serialize(function () {
-        db.run("CREATE TABLE songs (name varchar(255), description varchar(255))");
+        db.run("CREATE TABLE songs (id INTEGER PRIMARY KEY,name varchar(255), description varchar(255))");
         db.run('CREATE TABLE "songs_data" (id INTEGER PRIMARY KEY,song varchar(255),tekst text,start float, duration float)');
     });
 

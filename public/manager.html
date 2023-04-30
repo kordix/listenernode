@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    
+    <div id="app" class="container">
+        
+        <table class="table" style="max-width:600px">
+            <tr>
+                <td>Nazwa</td>
+                <td>Opis</td>
+
+            </tr>
+            <tr v-for="elem in songsheaders">
+                <td>{{elem.name}}</td>
+                <td>{{elem.description}}</td>
+                <td><button class="btn-sm btn-danger" @click="deletepos(elem.id)">{{elem.id}}</button></td>
+        
+            </tr>
+        </table>
+
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+    <script>
+        let app = new Vue({
+            el:'#app',
+            data:{
+            songsheaders:[],
+
+            },
+
+            mounted(){
+                let self = this;
+                fetch('/getsongsheaders').then((res) => res.json()).then((res) => { console.log(res); self.songsheaders = res; });
+
+            },
+            methods:{
+                deletepos(id){
+                    fetch('/delete?id='+id)
+                }
+            }
+
+        })
+    </script>
+
+
+</body>
+</html>

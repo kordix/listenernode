@@ -1,0 +1,5 @@
+-edycja tekstów
+-łączenie
+-usuwanie duplikatów
+-dokładnie ustawianie czasów
+-obsługa błędów
